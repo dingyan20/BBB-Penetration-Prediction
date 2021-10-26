@@ -49,4 +49,4 @@ dict_gene = df_gene_node.set_index('Gene_ID')['Node_Idx'].to_dict()
 df_drugpro['Drug_ID'] = df_drugpro['Drug_ID'].map(dict_drug)
 df_drugpro['Gene_ID'] = df_drugpro['Gene_ID'].map(dict_gene)
 
-df_drugpro.to_csv('drug_protein_interaction.csv')
+df_drugpro.to_csv('drug_protein_interaction.csv', index=False)

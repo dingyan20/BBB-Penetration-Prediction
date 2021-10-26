@@ -31,4 +31,4 @@ df_sim = pd.DataFrame(sim_scores, columns=['Drug_1', 'Drug_2', 'Similarity'])
 df_drugsim = df_sim[df_sim['Similarity'] > 0.7].reset_index(drop=True)
 df_drugsim['Relation'] = [0]*df_drugsim.shape[0]
 
-df_drugsim.to_csv('drug_similarity.csv')
+df_drugsim.to_csv('drug_similarity.csv', index=False)
