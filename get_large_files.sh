@@ -10,5 +10,6 @@ wget https://dgl-data.s3-us-west-2.amazonaws.com/dataset/DRKG/drkg.tar.gz
 tar -xzvf drkg.tar.gz
 mv embed/DRKG_TransE_l2_entity.npy .
 rm entity2src.tsv relation_glossary.tsv drkg.tar.gz
+rm ._drkg.tsv ._embed ._entity2src.tsv ._relation_glossary.tsv
 rm -r embed
 echo -e 'Done.\n\n'
