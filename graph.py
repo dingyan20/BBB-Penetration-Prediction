@@ -26,20 +26,7 @@ mordred_des = featurizer.featurize(df_drug['CanonicalSMILES'].to_list())
 mordred_des = StandardScaler().fit_transform(mordred_des)
 mordred_des = torch.tensor(mordred_des, dtype=torch.float)
 
-# DRKG embeddings
-df_drug['Entity'] = 'Compound::' + df_drug['DRKG_ID']
-df_drug_drkg = df_drug[df_drug['DRKG_ID'].notna()]
-df_drug_drkg.iloc[1, -1] = 'Compound::chebi:134923'
-
-drkg_emb = np.load('DRKG_TransE_l2_entity.npy')
-df_emb_map = pd.read_csv('entities.tsv',
-                         sep='\t', names=['Entity', 'Emb_Idx'])
-
-df_drug_drkg = df_drug_drkg.join(df_emb_map.set_index('Entity'), on='Entity')
-drkg_emb = drkg_emb[df_drug_drkg['Emb_Idx']]
-drkg_emb = StandardScaler().fit_transform(drkg_emb)
-drkg_emb = torch.tensor(drkg_emb, dtype=torch.float)
-
+# node labels
 y = torch.tensor(df_drug['P_NP'].values)
 
 # graph with both drug-protein interactions and drug-drug similarity as the edges
@@ -47,12 +34,6 @@ y = torch.tensor(df_drug['P_NP'].values)
 data_drugsim = Data(x=mordred_des, edge_index=edge_index,
                     edge_type=edge_type, y=y)
 torch.save(data_drugsim, 'graph_drugsim.pt')
-
-# graph with drug-protein interactions and drug-drug similarity as the edges
-# Mordred descriptors and DRKG embeddings as the node features
-data_drugsim_drkg = Data(x=mordred_des, x1=drkg_emb, edge_index=edge_index,
-                         edge_type=edge_type, y=y)
-torch.save(data_drugsim_drkg, 'graph_drugsim_drkg.pt')
 
 # graph with only drug-protein interactions as the edges
 # Mordred descriptors as the node features
